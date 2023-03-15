@@ -1,29 +1,36 @@
 class FlowParticle {
-    constructor(x, y) {
-      this.x = x;
-      this.y = y;
-      this.v = createVector(x, y);
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.moveVector = createVector(x, y);
+    this.forceVector = createVector(0, 0);
+    this.limit = 2;
+  }
+
+  draw() {
+    fill("white");
+    circle(this.moveVector.x, this.moveVector.y, 10);
+  }
+
+  update() {
+    this.moveVector.add(this.forceVector);
+    // this.v.add(createVector(random(-10, 10), random(-10, 10)));
+    if (this.moveVector.x > width) {
+      this.moveVector.x = 0;
     }
-  
-    draw() {
-      fill("white");
-      circle(this.v.x, this.v.y, 10);
+    if (this.moveVector.y > height) {
+      this.moveVector.y = 0;
     }
-  
-    update() {
-      this.v.add(createVector(random(-10,10), random(-10,10)));
-      if(this.v.x > width) {
-        this.v.x = 0;
-      }
-      if(this.v.y > height) {
-        this.v.y = 0;
-      }
-      if(this.v.x < 0) {
-        this.v.x = width;
-      }
-      if(this.v.y < 0) {
-        this.v.y = height;
-      }
+    if (this.moveVector.x < 0) {
+      this.moveVector.x = width;
+    }
+    if (this.moveVector.y < 0) {
+      this.moveVector.y = height;
     }
   }
-  
+
+  addToForceVector(v) {
+    this.forceVector.add(v);
+    this.forceVector.limit(this.limit);
+  }
+}

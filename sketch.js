@@ -12,7 +12,6 @@ function setup() {
     }
   }
   flowParticles.push(new FlowParticle(random(width), random(height)));
-  frameRate(10);
 }
 
 function draw() {
@@ -22,6 +21,17 @@ function draw() {
     let fc = flowField[i];
     fc.update();
     fc.draw();
+    for (let k = 0; k < flowParticles.length; k++) {
+      let fp = flowParticles[k];
+      if (
+        fp.x >= fc.x &&
+        fp.x <= fc.x + cellSize &&
+        fp.y >= fc.y &&
+        fp.y <= fp.y + cellSize
+      ) {
+        fp.addToForceVector(fc.directionVector);
+      }
+    }
   }
   // loop through the particles...
   for (let j = 0; j < flowParticles.length; j++) {
